@@ -20,8 +20,10 @@ class MainActivity : AppCompatActivity() {
         button.setOnClickListener {
             if (mediaPlayerWrapper.isPlaying() == true) {
                 mediaPlayerWrapper.pause()
+                button.text = "Play"
             } else if (mediaPlayerWrapper.isPlaying() == false) {
                 mediaPlayerWrapper.play()
+                button.text = "Pause"
             }
         }
     }
