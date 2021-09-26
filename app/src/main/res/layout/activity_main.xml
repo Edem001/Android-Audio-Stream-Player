@@ -5,14 +5,18 @@
     android:id="@+id/ParentView"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:foregroundTint="#00B81E1E"
     tools:context=".MainActivity">
 
     <Button
         android:id="@+id/button"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        style="@style/Widget.AppCompat.Button.Borderless"
+        android:layout_width="75dp"
+        android:layout_height="75dp"
         android:layout_marginBottom="25dp"
-        android:text="Play/Pause"
+        android:background="@drawable/ic_play"
+        android:elevation="0dp"
+        android:translationZ="0dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
