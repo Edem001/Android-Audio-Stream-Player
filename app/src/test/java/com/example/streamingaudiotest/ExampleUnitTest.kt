@@ -1,17 +1,28 @@
 package com.example.streamingaudiotest
 
+import okhttp3.OkHttpClient
+import okhttp3.Request
+import org.junit.Assert.*
 import org.junit.Test
 
-import org.junit.Assert.*
 
-/**
- * Example local unit test, which will execute on the development machine (host).
- *
- * See [testing documentation](http://d.android.com/tools/testing).
- */
 class ExampleUnitTest {
     @Test
-    fun addition_isCorrect() {
-        assertEquals(4, 2 + 2)
+    fun is_link_available() {
+        val client = OkHttpClient()
+
+        val request = Request.Builder()
+            .url("https://online.hitfm.ua/HitFM_HD")
+            .build()
+
+        assertTrue(client.newCall(request).execute().isSuccessful)
+    }
+
+    @Test
+    fun test_junit (){
+        assertTrue(true)
+
+        assertEquals((1+5), 6)
+        assertNotEquals("Hello world", "hello\n")
     }
 }
