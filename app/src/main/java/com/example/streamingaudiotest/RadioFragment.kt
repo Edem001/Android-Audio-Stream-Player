@@ -1,15 +1,25 @@
 package com.example.streamingaudiotest
 
 import android.content.Context
+import android.graphics.BitmapFactory
+import android.graphics.Color
+import android.media.Image
 import android.net.Uri
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ImageView
+import android.widget.RelativeLayout
+import android.widget.TextView
+import androidx.constraintlayout.widget.ConstraintLayout
+import androidx.core.content.ContextCompat
+import androidx.palette.graphics.Palette
 
-private const val ARG_PARAM1 = "param1"
-private const val ARG_PARAM2 = "param2"
+private const val ARG_URL = "URL"
+private const val ARG_Name = "Name"
+private const val ARG_Icon = "Icon"
 
 /**
  * A simple [Fragment] subclass.
@@ -20,16 +30,18 @@ private const val ARG_PARAM2 = "param2"
  * create an instance of this fragment.
  */
 class RadioFragment : Fragment() {
-    // TODO: Rename and change types of parameters
-    private var param1: String? = null
-    private var param2: String? = null
+
+    private var url: String? = null
+    private var name: String? = null
+    private var icon: Int? = null
     private var listener: OnFragmentInteractionListener? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         arguments?.let {
-            param1 = it.getString(ARG_PARAM1)
-            param2 = it.getString(ARG_PARAM2)
+            url = it.getString(ARG_URL)
+            name = it.getString(ARG_Name)
+            icon = it.getInt(ARG_Icon)
         }
     }
 
@@ -37,23 +49,48 @@ class RadioFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_radio, container, false)
-    }
+        val inflatedView = inflater.inflate(R.layout.fragment_radio, container, false)
 
-    // TODO: Rename method, update argument and hook method into UI event
+        val image = inflatedView.findViewById<ImageView>(R.id.imageView)
+        val textView = inflatedView.findViewById<TextView>(R.id.radioName)
+
+        image.setImageResource(icon ?: R.drawable.ic_error_ico)
+        textView.text = name ?: "Error"
+
+        val bitmap = BitmapFactory.decodeResource(resources, icon ?: R.drawable.ic_error_ico)
+        Palette.Builder(bitmap).generate {
+            it?.let { palette ->
+                val dominantColor = palette.getDominantColor(
+                    ContextCompat.getColor(
+                        context!!,
+                        R.color.colorPrimaryDark
+                    )
+                )
+                val lightColor = palette.getVibrantColor(Color.BLACK)
+
+                textView.setTextColor(lightColor)
+                view?.setBackgroundColor(dominantColor)
+
+                val parentView = activity?.findViewById<ConstraintLayout>(R.id.ParentView)
+                parentView?.setBackgroundColor(dominantColor)
+            }
+        }
+
+        return inflatedView
+    }
+    
     fun onButtonPressed(uri: Uri) {
         listener?.onFragmentInteraction(uri)
     }
 
-    override fun onAttach(context: Context) {
-        super.onAttach(context)
-        if (context is OnFragmentInteractionListener) {
-            listener = context
-        } else {
-            throw RuntimeException(context.toString() + " must implement OnFragmentInteractionListener")
-        }
-    }
+//    override fun onAttach(context: Context) {
+//        super.onAttach(context)
+//        if (context is OnFragmentInteractionListener) {
+//            listener = context
+//        } else {
+//            throw RuntimeException(context.toString() + " must implement OnFragmentInteractionListener")
+//        }
+//    }
 
     override fun onDetach() {
         super.onDetach()
@@ -83,15 +120,16 @@ class RadioFragment : Fragment() {
          *
          * @param url Parameter 1.
          * @param name Parameter 2.
-         * @return A new instance of fragment HitFMFragment.
+         * @param icon Parameter 3.
+         * @return A new instance of fragment RadioFragment.
          */
-        // TODO: Rename and change types and number of parameters
         @JvmStatic
-        fun newInstance(url: String, name: String) =
+        fun newInstance(url: String, name: String, icon: Int) =
             RadioFragment().apply {
                 arguments = Bundle().apply {
-                    putString(ARG_PARAM1, url)
-                    putString(ARG_PARAM2, name)
+                    putString(ARG_URL, url)
+                    putString(ARG_Name, name)
+                    putInt(ARG_Icon, icon)
                 }
             }
     }
