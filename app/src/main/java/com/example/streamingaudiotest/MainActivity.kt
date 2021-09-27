@@ -19,7 +19,7 @@ import androidx.viewpager.widget.ViewPager
 
 class MainActivity : AppCompatActivity() {
     //val mediaPlayerWrapper = MediaPlayerWrapper(this,"https://stream.zeno.fm/f174214qvzzuv", true)
-    val mediaPlayerWrapper = MediaPlayerWrapper(this, "https://online.hitfm.ua/HitFM_HD", false)
+    var mediaPlayerWrapper = MediaPlayerWrapper(this)
 
     private val radioList = ArrayList<Radio>()
     private var lastVibrantColor: Int? = null
@@ -49,6 +49,8 @@ class MainActivity : AppCompatActivity() {
                     resources,
                     icon
                 )
+
+                mediaPlayerWrapper.playerInit(radioList[position].URL, false)
                 Palette.Builder(bitmap).generate {
                     it?.let { palette ->
                         val dominantColor = palette.getDominantColor(
